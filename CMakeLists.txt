@@ -17,6 +17,7 @@ project(JumpstartedSkeleton VERSION ${VERSION})
 enable_testing()
 
 option(BUILD_SHARED_LIBS "Build dynamic libraries when on, else static" ON)
+option(TEST_WITH_VALGRIND "Run unit tests with valgrind (if CMAKE_CROSSCOMPILING_EMULATOR is defined, it will override this setting)" OFF)
 
 add_compile_options(-Werror -Wall -Wpedantic -Wconversion)
 set(CMAKE_C_STANDARD 99)

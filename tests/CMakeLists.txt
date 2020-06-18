@@ -12,6 +12,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 find_package(GTest REQUIRED)
+find_program(VALGRIND_EXE valgrind)
 
 add_custom_target(test-all
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -31,6 +32,13 @@ function(create_test NAME LIB)
     if (DEFINED CMAKE_CROSSCOMPILING_EMULATOR)
         add_test(NAME ${NAME}
             COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} "$<TARGET_FILE:${NAME}>" ${XML_OUTPUT_ARG})
+    elseif (VALGRIND_EXE AND TEST_WITH_VALGRIND)
+        # Valgrind isn't smart enough to create directories that don't exist
+        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/valgrind")
+        add_test(NAME ${NAME}
+            COMMAND "${VALGRIND_EXE}" --leak-check=full --leak-resolution=med  --track-origins=yes --vgdb=no
+                --xml=yes "--xml-file=${CMAKE_BINARY_DIR}/valgrind/${NAME}-valgrind.xml" --error-exitcode=1
+                "$<TARGET_FILE:${NAME}>" ${XML_OUTPUT_ARG})
     else ()
         add_test(NAME ${NAME}
             COMMAND "$<TARGET_FILE:${NAME}>" ${XML_OUTPUT_ARG})
