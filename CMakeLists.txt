@@ -11,6 +11,7 @@
 
 cmake_minimum_required(VERSION 3.9)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}")
 file(STRINGS "version.txt" VERSION)
 project(JumpstartedSkeleton VERSION ${VERSION})
 
