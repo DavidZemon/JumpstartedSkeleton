@@ -14,6 +14,16 @@ cmake_minimum_required(VERSION 3.9)
 file(STRINGS "version.txt" VERSION)
 project(JumpstartedSkeleton VERSION ${VERSION})
 
+# Configure SonarQube properties file
+if (DEFINED ENV{CI_GTEST_OUTPUT_DIR})
+    set(GTEST_OUTPUT_DIR "${CMAKE_BINARY_DIR}/$ENV{CI_GTEST_OUTPUT_DIR}")
+else ()
+    set(GTEST_OUTPUT_DIR "${CMAKE_BINARY_DIR}/gtest_output")
+endif ()
+# Don't use PROJECT_SOURCE_DIR in the properties file because paths get changed up when in Docker
+file(RELATIVE_PATH RELATIVE_SOURCE_ROOT "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+configure_file(sonar-project.properties.in sonar-project.properties @ONLY)
+
 enable_testing()
 
 option(BUILD_SHARED_LIBS "Build dynamic libraries when on, else static" ON)

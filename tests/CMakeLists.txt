@@ -40,12 +40,6 @@ if (GCOVR_EXE)
         DEPENDS test-all)
 endif ()
 
-if (DEFINED ENV{CI_GTEST_OUTPUT_DIR})
-    set(GTEST_OUTPUT_DIR "${CMAKE_BINARY_DIR}/$ENV{CI_GTEST_OUTPUT_DIR}")
-else ()
-    set(GTEST_OUTPUT_DIR "${CMAKE_BINARY_DIR}/gtest_output")
-endif ()
-
 function(create_test NAME LIB)
     set(XML_OUTPUT_ARG "--gtest_output=xml:${GTEST_OUTPUT_DIR}/${NAME}.xml")
 
