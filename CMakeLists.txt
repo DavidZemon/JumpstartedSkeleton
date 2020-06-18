@@ -18,8 +18,11 @@ enable_testing()
 
 option(BUILD_SHARED_LIBS "Build dynamic libraries when on, else static" ON)
 option(TEST_WITH_VALGRIND "Run unit tests with valgrind (if CMAKE_CROSSCOMPILING_EMULATOR is defined, it will override this setting)" OFF)
+option(HTML_COVERAGE_REPORT "When enabled, test coverage will be reported in HTML format for human consumption. When disable, coverage will be reported in XML for use with SonarQube." ON)
 
 add_compile_options(-Werror -Wall -Wpedantic -Wconversion)
+set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} --coverage")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
