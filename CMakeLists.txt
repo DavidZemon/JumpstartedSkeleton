@@ -27,6 +27,22 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 
+find_program(CPPCHECK_EXE cppcheck)
+if (CPPCHECK_EXE)
+    message("-- Program cppcheck found: ${CPPCHECK_EXE}")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    add_custom_target(cppcheck
+        COMMAND "${CPPCHECK_EXE}" --std=c++${CMAKE_CXX_STANDARD} --enable=all --quiet "--project=${PROJECT_BINARY_DIR}/compile_commands.json")
+endif ()
+
+find_program(CLANG_TIDY_EXE clang-tidy)
+if (CLANG_TIDY_EXE)
+    message("-- Program clang-tidy found: ${CLANG_TIDY_EXE}")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    set(CMAKE_C_CLANG_TIDY "${CLANG_TIDY_EXE}" --quiet "-header-filter=${PROJECT_SOURCE_DIR}/(include/Zemon|src|tests)/.*" -p "${PROJECT_BINARY_DIR}/compile_commands.json")
+    set(CMAKE_CXX_CLANG_TIDY "${CMAKE_C_CLANG_TIDY}")
+endif ()
+
 add_subdirectory(src)
 add_subdirectory(tests)
 
