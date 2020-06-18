@@ -14,6 +14,8 @@ cmake_minimum_required(VERSION 3.9)
 file(STRINGS "version.txt" VERSION)
 project(JumpstartedSkeleton VERSION ${VERSION})
 
+enable_testing()
+
 option(BUILD_SHARED_LIBS "Build dynamic libraries when on, else static" ON)
 
 add_compile_options(-Werror -Wall -Wpedantic -Wconversion)
@@ -22,6 +24,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 
 add_subdirectory(src)
+add_subdirectory(tests)
 
 install(PROGRAMS scripts/JumpstartedSkeleton.init
         RENAME JumpstartedSkeleton
