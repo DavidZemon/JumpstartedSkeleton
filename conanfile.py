@@ -28,7 +28,10 @@ class JumpstartedSkeleton(ConanFile):
     default_options = {'shared': False, 'fPIC': True}
     generators = 'cmake_find_package'
 
-    build_requires = 'gtest/cci.20210126'
+    build_requires = (
+        'gtest/cci.20210126',
+        'doxygen/[^1.8.8]'
+    )
 
     exports = 'version.txt'
     scm = {
