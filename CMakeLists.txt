@@ -25,6 +25,8 @@ endif ()
 file(RELATIVE_PATH RELATIVE_SOURCE_ROOT "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
 configure_file(sonar-project.properties.in sonar-project.properties @ONLY)
 
+find_package(Doxygen QUIET)
+
 enable_testing()
 
 option(BUILD_SHARED_LIBS "Build dynamic libraries when on, else static" ON)
@@ -69,5 +71,11 @@ install(EXPORT ${PROJECT_NAME}Config
     DESTINATION lib/cmake/${PROJECT_NAME}
     NAMESPACE JumpstartedSkeleton::
     COMPONENT dev)
+
+if (TARGET Doxygen::doxygen)
+    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "README.md")
+    set(DOXYGEN_STRIP_INC_PATH "include")
+    doxygen_add_docs(docs "README.md" "src" "include")
+endif ()
 
 include(JumpstartedSkeletonCPack.cmake)
